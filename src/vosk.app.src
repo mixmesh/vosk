@@ -1,0 +1,9 @@
+{application, vosk,
+ [{description, "Erlang binding to vosk"},
+  {vsn, git},
+  {modules, ["@@MODULES@@"]},
+%%  {mod, {vosk_app, []}},
+%%  {registered, [vosk_srv]},
+  {env, []},
+  {applications,[kernel,stdlib]}
+  ]}.
