@@ -276,8 +276,12 @@ static ERL_NIF_TERM nif_recognizer_new(ErlNifEnv* env, int argc,
     if (!enif_get_resource(env, argv[0], object_res, (void**) &obj) ||
 	(obj->type != VOSK_MODEL))
 	return enif_make_badarg(env);
-    if (!enif_get_double(env, argv[1], &sample_rate))
-	return enif_make_badarg(env);
+    if (!enif_get_double(env, argv[1], &sample_rate)) {
+	long rate;
+	if (!enif_get_long(env, argv[1], &rate))
+	    return enif_make_badarg(env);
+	sample_rate = (double) rate;
+    }
     if ((recognizer = vosk_so.vosk_recognizer_new(obj->ptr.model,
 						  (float)sample_rate)) == NULL)
 	return enif_make_badarg(env);
@@ -303,9 +307,13 @@ static ERL_NIF_TERM nif_recognizer_new_spk(ErlNifEnv* env, int argc,
 
     if (!enif_get_resource(env, argv[0], object_res, (void**) &obj) ||
 	(obj->type != VOSK_MODEL))
-	return enif_make_badarg(env);
-    if (!enif_get_double(env, argv[1], &sample_rate))
-	return enif_make_badarg(env);
+	return enif_make_badarg(env);    
+    if (!enif_get_double(env, argv[1], &sample_rate)) {
+	long rate;
+	if (!enif_get_long(env, argv[1], &rate))
+	    return enif_make_badarg(env);
+	sample_rate = (double) rate;
+    }    
     if (!enif_get_resource(env, argv[2], object_res, (void**) &spk_obj) ||
 	(spk_obj->type != VOSK_SPK_MODEL))
 	return enif_make_badarg(env);
@@ -338,8 +346,12 @@ static ERL_NIF_TERM nif_recognizer_new_grm(ErlNifEnv* env, int argc,
     if (!enif_get_resource(env, argv[0], object_res, (void**) &obj) ||
 	(obj->type != VOSK_MODEL))
 	return enif_make_badarg(env);
-    if (!enif_get_double(env, argv[1], &sample_rate))
-	return enif_make_badarg(env);
+    if (!enif_get_double(env, argv[1], &sample_rate)) {
+	long rate;
+	if (!enif_get_long(env, argv[1], &rate))
+	    return enif_make_badarg(env);
+	sample_rate = (double) rate;
+    }
     if (!(r=enif_get_string(env, argv[2], grammar, sizeof(grammar),
 			    ERL_NIF_LATIN1))
 	|| (r < 0))
@@ -389,7 +401,7 @@ static ERL_NIF_TERM nif_recognizer_set_max_alternatives(ErlNifEnv* env, int argc
     if (!enif_get_resource(env, argv[0], object_res, (void**) &obj) ||
 	(obj->type != VOSK_RECOGNIZER))
 	return enif_make_badarg(env);	
-    if (enif_get_int(env, argv[1], &max_alternatives))
+    if (!enif_get_int(env, argv[1], &max_alternatives))
 	return enif_make_badarg(env);
     vosk_so.vosk_recognizer_set_max_alternatives(obj->ptr.recognizer,
 						 max_alternatives);
@@ -406,7 +418,7 @@ static ERL_NIF_TERM nif_recognizer_set_words(ErlNifEnv* env, int argc,
     if (!enif_get_resource(env, argv[0], object_res, (void**) &obj) ||
 	(obj->type != VOSK_RECOGNIZER))
 	return enif_make_badarg(env);	
-    if (enif_get_int(env, argv[1], &words))
+    if (!enif_get_int(env, argv[1], &words))
 	return enif_make_badarg(env);
     vosk_so.vosk_recognizer_set_words(obj->ptr.recognizer, words);
 

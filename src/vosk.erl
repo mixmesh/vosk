@@ -55,20 +55,20 @@ model_find_word(_Model, _Word) ->
 spk_model_new(_ModelPath) ->
     ?nif_stub().
 
--spec recognizer_new(Model::vosk_model(), SampleRate::float()) ->
+-spec recognizer_new(Model::vosk_model(), SampleRate::number()) ->
 	  vosk_recognizer().
 
 recognizer_new(_VoskModel, _SampleRate) ->
     ?nif_stub().
 
--spec recognizer_new_spk(Model::vosk_model(), SampleRate::float(),
+-spec recognizer_new_spk(Model::vosk_model(), SampleRate::number(),
 			 SpkModel::vosk_spk_model()) ->
 	  vosk_recognizer().
     
 recognizer_new_spk(_Model, _SampleRate, _SpkModel) ->
     ?nif_stub().
 
--spec recognizer_new_grm(Model::vosk_model(), SampleRate::float(),
+-spec recognizer_new_grm(Model::vosk_model(), SampleRate::number(),
 			 Grammar::string()) ->
 	  vosk_recognizer().
     
