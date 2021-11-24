@@ -382,8 +382,7 @@ static ERL_NIF_TERM nif_model_find_word(ErlNifEnv* env, int argc,
     if (!enif_get_resource(env, argv[0], object_res, (void**) &obj) ||
 	(obj->type != VOSK_MODEL))
 	return enif_make_badarg(env);
-    if (!(r=enif_get_string(env, argv[2], word, sizeof(word),
-			    ERL_NIF_LATIN1))
+    if (!(r=enif_get_string(env, argv[1], word, sizeof(word),ERL_NIF_LATIN1))
 	|| (r < 0))
 	return enif_make_badarg(env);
     if (vosk_so.vosk_model_find_word(obj->ptr.model, word))
