@@ -385,9 +385,8 @@ static ERL_NIF_TERM nif_model_find_word(ErlNifEnv* env, int argc,
     if (!(r=enif_get_string(env, argv[1], word, sizeof(word),ERL_NIF_LATIN1))
 	|| (r < 0))
 	return enif_make_badarg(env);
-    if (vosk_so.vosk_model_find_word(obj->ptr.model, word))
-	return ATOM(true);
-    return ATOM(false);
+    r = vosk_so.vosk_model_find_word(obj->ptr.model, word);
+    return enif_make_int(env, r);
 }
 
 static ERL_NIF_TERM nif_recognizer_set_max_alternatives(ErlNifEnv* env, int argc,
@@ -416,8 +415,12 @@ static ERL_NIF_TERM nif_recognizer_set_words(ErlNifEnv* env, int argc,
     
     if (!enif_get_resource(env, argv[0], object_res, (void**) &obj) ||
 	(obj->type != VOSK_RECOGNIZER))
-	return enif_make_badarg(env);	
-    if (!enif_get_int(env, argv[1], &words))
+	return enif_make_badarg(env);
+    if (argv[1] == ATOM(true))
+	words = 1;
+    else if (argv[1]== ATOM(false))
+	words = 0;
+    else
 	return enif_make_badarg(env);
     vosk_so.vosk_recognizer_set_words(obj->ptr.recognizer, words);
 
@@ -635,6 +638,7 @@ static int load_vosk_so(const char* lib, vosk_dl_t* dlp)
 
     if ((handle = enif_dlopen(lib, dl_error, NULL)) == NULL)
 	return -1;
+    // Fixme: check load of each symbol! (or check each call)
     dlp->vosk_model_new = enif_dlsym(handle, "vosk_model_new", dl_error, NULL);
     dlp->vosk_model_free = enif_dlsym(handle, "vosk_model_free", dl_error, NULL);
     dlp->vosk_model_find_word = enif_dlsym(handle, "vosk_model_find_word", dl_error, NULL);
@@ -704,6 +708,7 @@ static int nif_load(ErlNifEnv* env, void** priv_data, ERL_NIF_TERM load_info)
 
     load_atoms(env, ctx);
     load_vosk_so(libpath, &vosk_so);
+    vosk_so.vosk_set_log_level(-1);
 
     json_init(&ctx->json, JSON_ALL_MASK, json_callback, env);
     json_set_keys(&ctx->json, keytab, sizeof(keytab)/sizeof(keytab[0]), 1000);

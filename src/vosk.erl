@@ -46,7 +46,8 @@ init() ->
 model_new(_ModelPath) ->
     ?nif_stub().
 
--spec model_find_word(Model::vosk_model(), Word::string()) -> boolean().
+%% return -1 if not found, Symbol number otherwise 0...N
+-spec model_find_word(Model::vosk_model(), Word::string()) -> integer().
 
 model_find_word(_Model, _Word) ->
     ?nif_stub().    

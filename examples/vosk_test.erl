@@ -31,7 +31,7 @@ loop(R, Fd) ->
 		    loop(R, Fd)
 	    end;
 	eof ->
-	    Result = vosk:recognizer_result_final(R),
+	    Result = vosk:recognizer_final_result(R),
 	    io:format("parital: ~p\n", [Result]),
 	    ok
     end.
