@@ -439,7 +439,7 @@ static ERL_NIF_TERM nif_recognizer_accept_waveform(ErlNifEnv* env, int argc,
 	(obj->type != VOSK_RECOGNIZER))
 	return enif_make_badarg(env);
     if (!enif_inspect_iolist_as_binary(env, argv[1], &bin))
-	return enif_make_badarg(env);	
+	return enif_make_badarg(env);
     r = vosk_so.vosk_recognizer_accept_waveform(
 	obj->ptr.recognizer, (const char*)bin.data, bin.size);
     return enif_make_int(env, r);
