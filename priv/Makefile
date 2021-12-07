@@ -7,8 +7,8 @@ LIBATOMIC=libatomic-1abecf58.so.1.2.0
 LIBVOSK=libvosk.so
 
 download:
-	wget $(MODELS_URL)/$(SV_MODEL).zip
-	wget $(MODELS_URL)/$(EN_MODEL).zip
+	wget $(URL)/$(MODELS_URL)/$(SV_MODEL).zip
+	wget $(URL)/$(MODELS_URL)/$(EN_MODEL).zip
 	unzip $(SV_MODEL).zip
 	unzip $(EN_MODEL).zip
 
@@ -17,5 +17,5 @@ py_install:
 	 pip3 install vosk
 
 copy_so:
-	cp $(HOME)/.local/lib/$(PYTHON3)/site-packeages/vosk.lib/$(LIBATOMIC) .
-	cp $(HOME)/.local/lib/$(PYTHON3)/site-packeages/vosk/$(LIBVOSK) .
+	cp $(HOME)/.local/lib/$(PYTHON3)/site-packages/vosk.libs/$(LIBATOMIC) .
+	cp $(HOME)/.local/lib/$(PYTHON3)/site-packages/vosk/$(LIBVOSK) .
