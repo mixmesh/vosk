@@ -271,19 +271,19 @@ static ERL_NIF_TERM nif_recognizer_new(ErlNifEnv* env, int argc,
     VoskRecognizer* recognizer;
     vosk_object_t* obj;
     vosk_object_t* robj;
-    double sample_rate;
+    double ratef;
 
     if (!enif_get_resource(env, argv[0], object_res, (void**) &obj) ||
 	(obj->type != VOSK_MODEL))
 	return enif_make_badarg(env);
-    if (!enif_get_double(env, argv[1], &sample_rate)) {
+    if (!enif_get_double(env, argv[1], &ratef)) {
 	long rate;
 	if (!enif_get_long(env, argv[1], &rate))
 	    return enif_make_badarg(env);
-	sample_rate = (double) rate;
+	ratef = (double) rate;
     }
     if ((recognizer = vosk_so.vosk_recognizer_new(obj->ptr.model,
-						  (float)sample_rate)) == NULL)
+						  (float)ratef)) == NULL)
 	return enif_make_badarg(env);
 
     robj = enif_alloc_resource(object_res, sizeof(vosk_object_t));
@@ -303,16 +303,16 @@ static ERL_NIF_TERM nif_recognizer_new_spk(ErlNifEnv* env, int argc,
     vosk_object_t* obj;
     vosk_object_t* spk_obj;
     vosk_object_t* robj;
-    double sample_rate;
+    double ratef;
 
     if (!enif_get_resource(env, argv[0], object_res, (void**) &obj) ||
 	(obj->type != VOSK_MODEL))
 	return enif_make_badarg(env);    
-    if (!enif_get_double(env, argv[1], &sample_rate)) {
+    if (!enif_get_double(env, argv[1], &ratef)) {
 	long rate;
 	if (!enif_get_long(env, argv[1], &rate))
 	    return enif_make_badarg(env);
-	sample_rate = (double) rate;
+	ratef = (double) rate;
     }    
     if (!enif_get_resource(env, argv[2], object_res, (void**) &spk_obj) ||
 	(spk_obj->type != VOSK_SPK_MODEL))
@@ -320,7 +320,7 @@ static ERL_NIF_TERM nif_recognizer_new_spk(ErlNifEnv* env, int argc,
 
     if ((recognizer = vosk_so.vosk_recognizer_new_spk(
 	     obj->ptr.model,
-	     (float)sample_rate,
+	     (float)ratef,
 	     spk_obj->ptr.spk_model)) == NULL)
 	return enif_make_badarg(env);
 
@@ -340,17 +340,17 @@ static ERL_NIF_TERM nif_recognizer_new_grm(ErlNifEnv* env, int argc,
     VoskRecognizer* recognizer;
     vosk_object_t* obj;
     vosk_object_t* robj;
-    double sample_rate;
+    double ratef;
     char grammar[MAX_GRAMMAR];
 
     if (!enif_get_resource(env, argv[0], object_res, (void**) &obj) ||
 	(obj->type != VOSK_MODEL))
 	return enif_make_badarg(env);
-    if (!enif_get_double(env, argv[1], &sample_rate)) {
+    if (!enif_get_double(env, argv[1], &ratef)) {
 	long rate;
 	if (!enif_get_long(env, argv[1], &rate))
 	    return enif_make_badarg(env);
-	sample_rate = (double) rate;
+	ratef = (double) rate;
     }
     if (!(r=enif_get_string(env, argv[2], grammar, sizeof(grammar),
 			    ERL_NIF_LATIN1))
@@ -359,7 +359,7 @@ static ERL_NIF_TERM nif_recognizer_new_grm(ErlNifEnv* env, int argc,
 
     if ((recognizer = vosk_so.vosk_recognizer_new_grm(
 	     obj->ptr.model,
-	     (float)sample_rate,
+	     (float)ratef,
 	     grammar)) == NULL)
 	return enif_make_badarg(env);
 
