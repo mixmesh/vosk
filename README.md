@@ -8,8 +8,8 @@ binary shared object and avoid the hassle of compilation.
 The steps are captured in a Makefile
 
     cd priv
-	make py\_install
-	make copy\_so
+	make py_install
+	make copy_so
 	make download
 	
 The py\_install will pip3 install sounddevice and vosk.
