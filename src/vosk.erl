@@ -22,6 +22,7 @@
 -export([recognizer_final_result/1]).
 -export([recognizer_reset/1]).
 -export([parse/1]).
+-export([wave_to_text/1]).
 
 -export_type([vosk_model/0]).
 -export_type([vosk_spk_model/0]).
@@ -136,3 +137,18 @@ recognizer_reset(_Recognizer) ->
 
 parse(_String) ->
     ?nif_stub().
+
+wave_to_text({Header,Samples}) ->
+    16000 = _Rate = proplists:get_value(rate, Header, 16000),
+    s16_le = proplists:get_value(format, Header, s16_le),
+    1 = proplists:get_value(channels, Header, 1),
+    wave_to_text_(Samples);
+wave_to_text(Samples) when is_binary(Samples) ->
+    wave_to_text_(Samples).
+
+wave_to_text_(Samples) ->
+    Model = model_new(filename:join(code:priv_dir(vosk), 
+				    "vosk-model-small-en-us-0.15")),
+    Recognizer = recognizer_new(Model, 16000),
+    recognizer_accept_waveform(Recognizer, Samples),
+    recognizer_partial_result(Recognizer).
