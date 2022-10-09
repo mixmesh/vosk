@@ -10,9 +10,11 @@ CFLAGS+=-std=c99 -Wall -O3
 LDFLAGS+=-shared
 
 OBJS = vosk_nif.o json.o
-LIBS = 
+LIBS =
 
 all: ../priv/$(APP)_nif.so
+
+clean:
 
 ../priv/$(APP)_nif.so: $(OBJS)
 	$(CC) $(LDFLAGS) $(OBJS) $(LIBS) -o ../priv/$(APP)_nif.so

@@ -17,5 +17,5 @@ py_install:
 	 pip3 install vosk
 
 copy_so:
-	cp $(HOME)/.local/lib/$(PYTHON3)/site-packages/vosk.libs/$(LIBATOMIC) .
+#	cp $(HOME)/.local/lib/$(PYTHON3)/site-packages/vosk.libs/$(LIBATOMIC) .
 	cp $(HOME)/.local/lib/$(PYTHON3)/site-packages/vosk/$(LIBVOSK) .
